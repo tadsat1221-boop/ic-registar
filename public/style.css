@@ -94,28 +94,44 @@ input.invalid {
 .ic-card-group {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-wrap: nowrap;
+  gap: 3px;
 }
 
 .ic-card-segment {
   width: 0;
-  flex: 1 1 60px;
+  flex: 4 1 0;
   min-width: 0;
   text-align: center;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  padding: 14px 4px;
+  padding: 14px 2px;
+  font-size: 0.95rem;
 }
 
-.ic-card-segment-4 {
-  flex: 1.4 1 70px;
+.ic-card-segment-5 {
+  flex: 5 1 0;
 }
 
 .ic-card-sep {
   color: var(--muted);
   font-weight: 700;
   flex: 0 0 auto;
+}
+
+.scan-preview {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+@media (max-width: 360px) {
+  .ic-card-segment {
+    padding: 12px 1px;
+    font-size: 0.85rem;
+  }
 }
 
 button {

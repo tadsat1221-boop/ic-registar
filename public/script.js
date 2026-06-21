@@ -5,11 +5,10 @@ const registerView = document.getElementById('register-view');
 const sentView = document.getElementById('sent-view');
 
 const icSegments = [
-  { el: document.getElementById('icCard1'), pattern: /[^A-Za-z]/g, maxLength: 2 },
-  { el: document.getElementById('icCard2'), pattern: /[^0-9A-Za-z]/g, maxLength: 3 },
+  { el: document.getElementById('icCard1'), pattern: /[^0-9A-Za-z]/g, maxLength: 5 },
+  { el: document.getElementById('icCard2'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
   { el: document.getElementById('icCard3'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
   { el: document.getElementById('icCard4'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
-  { el: document.getElementById('icCard5'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
 ];
 
 icSegments.forEach((segment, index) => {
@@ -38,16 +37,15 @@ function getIcCardNumberForDisplay() {
 
 function applyIcCardNumber(raw) {
   const cleaned = raw.toUpperCase().replace(/[^0-9A-Z]/g, '');
-  const match = cleaned.match(/[A-Z]{2}[0-9A-Z]{3}[0-9A-Z]{4}[0-9A-Z]{4}[0-9A-Z]{4}/);
+  const match = cleaned.match(/[0-9A-Z]{5}[0-9A-Z]{4}[0-9A-Z]{4}[0-9A-Z]{4}/);
   if (!match) {
     return false;
   }
   const value = match[0];
-  icSegments[0].el.value = value.slice(0, 2);
-  icSegments[1].el.value = value.slice(2, 5);
-  icSegments[2].el.value = value.slice(5, 9);
-  icSegments[3].el.value = value.slice(9, 13);
-  icSegments[4].el.value = value.slice(13, 17);
+  icSegments[0].el.value = value.slice(0, 5);
+  icSegments[1].el.value = value.slice(5, 9);
+  icSegments[2].el.value = value.slice(9, 13);
+  icSegments[3].el.value = value.slice(13, 17);
   return true;
 }
 
@@ -58,6 +56,7 @@ const scanCanvas = document.getElementById('scan-canvas');
 const scanHint = document.getElementById('scan-hint');
 const scanCaptureBtn = document.getElementById('scan-capture-btn');
 const scanCancelBtn = document.getElementById('scan-cancel-btn');
+const scanPreview = document.getElementById('scan-preview');
 
 let scanStream = null;
 
@@ -100,6 +99,9 @@ async function captureAndRead() {
   const ctx = scanCanvas.getContext('2d');
   ctx.drawImage(scanVideo, sx, sy, sw, sh, 0, 0, sw, sh);
 
+  scanPreview.src = scanCanvas.toDataURL('image/png');
+  scanPreview.classList.remove('hidden');
+
   scanCaptureBtn.disabled = true;
   scanHint.textContent = '読み取り中...';
 
@@ -110,7 +112,7 @@ async function captureAndRead() {
 
     if (applyIcCardNumber(data.text)) {
       closeScanner();
-      messageEl.textContent = 'ICカード番号を読み取りました。内容をご確認ください。';
+      messageEl.textContent = '撮影した画像と読み取り結果を確認のうえ、内容に誤りがないかご確認ください。';
       messageEl.classList.add('success');
     } else {
       scanHint.textContent = '読み取れませんでした。枠内に番号を収めて再度撮影してください。';

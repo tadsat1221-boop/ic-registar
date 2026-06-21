@@ -17,8 +17,8 @@ const TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// IC card number format, no separators: letters x2, alphanumeric x3, alphanumeric x4, alphanumeric x4, alphanumeric x4
-const icCardPattern = /^[A-Za-z]{2}[0-9A-Za-z]{3}[0-9A-Za-z]{4}[0-9A-Za-z]{4}[0-9A-Za-z]{4}$/;
+// IC card number format, no separators: alphanumeric x5, alphanumeric x4, alphanumeric x4, alphanumeric x4
+const icCardPattern = /^[0-9A-Za-z]{5}[0-9A-Za-z]{4}[0-9A-Za-z]{4}[0-9A-Za-z]{4}$/;
 
 app.post(
   '/api/register',
@@ -27,7 +27,7 @@ app.post(
     body('password').isLength({ min: 8 }).withMessage('パスワードは8文字以上で入力してください。'),
     body('icCardNumber')
       .matches(icCardPattern)
-      .withMessage('ICカード番号の形式が正しくありません（例: AB1C2345678901234）。'),
+      .withMessage('ICカード番号の形式が正しくありません（例: A1B2C3456789012）。'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
