@@ -7,8 +7,9 @@ const sentView = document.getElementById('sent-view');
 const icSegments = [
   { el: document.getElementById('icCard1'), pattern: /[^A-Za-z]/g, maxLength: 2 },
   { el: document.getElementById('icCard2'), pattern: /[^0-9A-Za-z]/g, maxLength: 3 },
-  { el: document.getElementById('icCard3'), pattern: /[^0-9]/g, maxLength: 4 },
-  { el: document.getElementById('icCard4'), pattern: /[^0-9]/g, maxLength: 4 },
+  { el: document.getElementById('icCard3'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
+  { el: document.getElementById('icCard4'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
+  { el: document.getElementById('icCard5'), pattern: /[^0-9A-Za-z]/g, maxLength: 4 },
 ];
 
 icSegments.forEach((segment, index) => {
@@ -37,7 +38,7 @@ function getIcCardNumberForDisplay() {
 
 function applyIcCardNumber(raw) {
   const cleaned = raw.toUpperCase().replace(/[^0-9A-Z]/g, '');
-  const match = cleaned.match(/[A-Z]{2}[0-9A-Z]{3}[0-9]{4}[0-9]{4}/);
+  const match = cleaned.match(/[A-Z]{2}[0-9A-Z]{3}[0-9A-Z]{4}[0-9A-Z]{4}[0-9A-Z]{4}/);
   if (!match) {
     return false;
   }
@@ -46,6 +47,7 @@ function applyIcCardNumber(raw) {
   icSegments[1].el.value = value.slice(2, 5);
   icSegments[2].el.value = value.slice(5, 9);
   icSegments[3].el.value = value.slice(9, 13);
+  icSegments[4].el.value = value.slice(13, 17);
   return true;
 }
 

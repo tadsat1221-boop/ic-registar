@@ -94,12 +94,13 @@ input.invalid {
 .ic-card-group {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 4px;
 }
 
 .ic-card-segment {
   width: 0;
-  flex: 1 1 0;
+  flex: 1 1 60px;
   min-width: 0;
   text-align: center;
   letter-spacing: 0.05em;
@@ -108,7 +109,7 @@ input.invalid {
 }
 
 .ic-card-segment-4 {
-  flex: 1.4 1 0;
+  flex: 1.4 1 70px;
 }
 
 .ic-card-sep {
