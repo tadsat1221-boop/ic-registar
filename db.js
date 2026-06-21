@@ -47,10 +47,4 @@ function markVerified(userId) {
   save(data);
 }
 
-function deleteUserByEmail(email) {
-  const data = load();
-  data.users = data.users.filter((u) => u.email !== email);
-  save(data);
-}
-
-module.exports = { findUserByEmail, findUserByToken, upsertUser, markVerified, deleteUserByEmail };
+module.exports = { findUserByEmail, findUserByToken, upsertUser, markVerified };
