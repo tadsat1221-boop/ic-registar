@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 
-const { findUserByEmail, findUserByToken, upsertUser, markVerified, deleteUserByEmail } = require('./db');
+const { findUserByEmail, findUserByToken, upsertUser, markVerified } = require('./db');
 const { sendVerificationMail } = require('./mailer');
 
 const app = express();
@@ -84,20 +84,6 @@ app.get('/verify/:token', (req, res) => {
   markVerified(user.id);
 
   res.sendFile(path.join(__dirname, 'views', 'verify-success.html'));
-});
-
-// Temporary cleanup endpoint for removing test data after manual verification.
-// Remove this route once test data has been cleaned up.
-app.delete('/api/admin/users', (req, res) => {
-  if (!process.env.ADMIN_SECRET || req.get('x-admin-secret') !== process.env.ADMIN_SECRET) {
-    return res.status(404).end();
-  }
-  const { email } = req.query;
-  if (!email) {
-    return res.status(400).json({ errors: ['email query parameter is required.'] });
-  }
-  deleteUserByEmail(email);
-  res.json({ message: `Deleted user: ${email}` });
 });
 
 app.listen(PORT, () => {
