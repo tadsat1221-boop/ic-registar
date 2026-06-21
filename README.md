@@ -14,9 +14,8 @@
    cp .env.example .env
    ```
 
-   - `GMAIL_USER`: 送信元のGmailアドレス
-   - `GMAIL_APP_PASSWORD`: Googleアカウントの「アプリパスワード」（2段階認証を有効化した上で発行）
-     https://myaccount.google.com/apppasswords で発行できます。通常のログインパスワードは使えません。
+   - `RESEND_API_KEY`: https://resend.com で発行するAPIキー。確認メールの送信に使用します。
+   - `RESEND_FROM_EMAIL`: 送信元アドレス。独自ドメインを認証していない場合は `onboarding@resend.dev` のままで構いません（その場合、送信先はResendに登録したアカウントのメールアドレスのみに制限されます）。
    - `BASE_URL`: 本番運用時は実際の公開URL（例: https://example.com）に変更してください。
 
 3. サーバー起動
@@ -37,4 +36,5 @@
 - ICカード番号は平文でメール送信・DB保存されます。本番運用ではICカード番号の取り扱いについて、暗号化やマスキングなど追加のセキュリティ対策を検討してください。
 - 本実装はこの環境にネイティブビルド環境（Visual Studio Build Tools）がなかったため、`better-sqlite3`ではなく依存なしの自前JSONファイルDB（`db.js`、`data.json`）と`bcryptjs`（純JS実装）を使用しています。
 - このPCではNorton AntivirusのHTTPS検査機能によりnpmのSSL証明書検証が失敗する問題がありました。`.certs/norton-root.pem`にエクスポートしたNorton証明書を`NODE_EXTRA_CA_CERTS`で指定することで回避しています（このリポジトリ固有の対応で、`.gitignore`済みです）。
-- さらにNortonの「Mail Shield」機能がGmail SMTPの465番ポート（暗黒TLS）への直接接続を妨害したため、587番ポート＋STARTTLSで接続するように`mailer.js`を実装しています。他の環境でNorton等のメール保護機能が無い場合も587番ポートは問題なく動作します。
+- さらにNortonの「Mail Shield」機能がGmail SMTPの465番ポート（暗黒TLS）への直接接続を妨害する問題があり、当初は587番ポート＋STARTTLSで回避していました。
+- 本番デプロイ先のRenderでは無料プランがSMTP用ポートへの外向き通信をブロックしているため、SMTPでの送信自体ができませんでした。そのため、メール送信はSMTPではなくResendのHTTPS API経由に変更しています（`mailer.js`）。
