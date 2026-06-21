@@ -33,12 +33,24 @@
         <input type="text" id="icCard3" class="ic-card-segment ic-card-segment-4" inputmode="numeric" autocomplete="off" required maxlength="4" pattern="[0-9]{4}" placeholder="0000" aria-label="ICカード番号 3組目（数字4桁）">
         <input type="text" id="icCard4" class="ic-card-segment ic-card-segment-4" inputmode="numeric" autocomplete="off" required maxlength="4" pattern="[0-9]{4}" placeholder="0000" aria-label="ICカード番号 4組目（数字4桁）">
       </div>
+      <button type="button" id="scan-btn" class="btn-secondary">カメラで読み取る</button>
 
       <button type="submit" id="submit-btn">登録する</button>
     </form>
 
     <div id="message" class="message" role="status" aria-live="polite"></div>
   </main>
+
+  <div class="scan-overlay hidden" id="scan-overlay">
+    <video id="scan-video" playsinline autoplay muted></video>
+    <canvas id="scan-canvas" class="hidden"></canvas>
+    <div class="scan-guide"></div>
+    <p class="scan-hint" id="scan-hint">ICカード番号が枠内に収まるように構えてください</p>
+    <div class="scan-actions">
+      <button type="button" id="scan-capture-btn" class="btn-primary">撮影する</button>
+      <button type="button" id="scan-cancel-btn" class="btn-secondary">キャンセル</button>
+    </div>
+  </div>
 
   <main class="card hidden" id="sent-view">
     <div class="icon success">✓</div>
@@ -47,6 +59,7 @@
     <p class="note">メールが届かない場合は、迷惑メールフォルダもご確認ください。</p>
   </main>
 
+  <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="/script.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
