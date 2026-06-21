@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ICカード番号登録</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#2563eb">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="IC登録">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="card" id="register-view">
+    <h1>新規登録</h1>
+    <p class="lead">メールアドレス・パスワード・ICカード番号を登録してください。登録後、確認メールが届きます。</p>
+
+    <form id="register-form" novalidate>
+      <label for="email">メールアドレス</label>
+      <input type="email" id="email" name="email" inputmode="email" autocomplete="email" required placeholder="example@example.com">
+
+      <label for="password">パスワード（8文字以上）</label>
+      <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8" placeholder="半角英数字8文字以上">
+
+      <label for="icCard1">ICカード番号</label>
+      <div class="ic-card-group">
+        <input type="text" id="icCard1" class="ic-card-segment" inputmode="latin" autocomplete="off" required maxlength="2" pattern="[A-Za-z]{2}" placeholder="AA" aria-label="ICカード番号 1組目（英字2桁）">
+        <input type="text" id="icCard2" class="ic-card-segment" inputmode="text" autocomplete="off" required maxlength="3" pattern="[0-9A-Za-z]{3}" placeholder="A12" aria-label="ICカード番号 2組目（英数字3桁）">
+        <input type="text" id="icCard3" class="ic-card-segment ic-card-segment-4" inputmode="numeric" autocomplete="off" required maxlength="4" pattern="[0-9]{4}" placeholder="0000" aria-label="ICカード番号 3組目（数字4桁）">
+        <input type="text" id="icCard4" class="ic-card-segment ic-card-segment-4" inputmode="numeric" autocomplete="off" required maxlength="4" pattern="[0-9]{4}" placeholder="0000" aria-label="ICカード番号 4組目（数字4桁）">
+      </div>
+
+      <button type="submit" id="submit-btn">登録する</button>
+    </form>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+  </main>
+
+  <main class="card hidden" id="sent-view">
+    <div class="icon success">✓</div>
+    <h1>確認メールを送信しました</h1>
+    <p class="lead">入力されたメールアドレス宛に確認メールを送信しました。メール内のURLをクリックして登録を完了してください。</p>
+    <p class="note">メールが届かない場合は、迷惑メールフォルダもご確認ください。</p>
+  </main>
+
+  <script src="/script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "ic-register-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "express-validator": "^7.3.2",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "pngjs": "^7.0.0"
+  }
+}
